@@ -30,7 +30,7 @@ $(strip \
     $(if $(2),$(2), \
       $(if $(filter @APACHE/% @GITHUB/% @GNOME/% @GNU/% @KERNEL/% @SF/% @SAVANNAH/% ftp://% http://% https://% file://%,$(1)),default, \
         $(if $(filter git://%,$(1)),$(call dl_method_git,$(1),$(2)), \
-          $(if $(filter svn://%,$(1)),svn, \
+          $(if $(filter svn://% svn+ssh://%,$(1)),svn, \
             $(if $(filter cvs://%,$(1)),cvs, \
               $(if $(filter hg://%,$(1)),hg, \
                 $(if $(filter sftp://%,$(1)),bzr, \
