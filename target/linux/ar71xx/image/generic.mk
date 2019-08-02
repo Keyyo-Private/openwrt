@@ -1392,10 +1392,10 @@ TARGET_DEVICES += fritz450e
 define Device/ak500w
   DEVICE_TITLE := AK500w (Compex MMZ563HV) (16MB flash)
   BOARDNAME := WPJ563
-  SUPPORTED_DEVICES := ak500w
+  SUPPORTED_DEVICES := wpj563
   IMAGE/sysupgrade.bin := append-kernel | pad-to $$$$(BLOCKSIZE) | \
     append-rootfs | pad-rootfs | append-metadata | check-size $$$$(IMAGE_SIZE)
-  DEVICE_PACKAGES := kmod-usb-core
+  DEVICE_PACKAGES := kmod-usb-core kmod-usb2 kmod-usb-storage wpad-mini kmod-ath9k kmod-ath10k ath10k-firmware-qca988x
   MTDPARTS := spi0.0:192k(u-boot)ro,14080k(firmware),2048k(kros),64k(art)ro
   IMAGE_SIZE := 14080k
 endef
