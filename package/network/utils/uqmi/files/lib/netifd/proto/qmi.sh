@@ -68,6 +68,11 @@ proto_qmi_setup() {
 		return 1
 	}
 
+	# Hack to fix qmi cold and warm boot init
+	uqmi -s -d "$device" --get-pin-status &
+	sleep 3
+	killall uqmi
+
 	echo "Waiting for SIM initialization"
 	local uninitialized_timeout=0
 	while uqmi -s -d "$device" --get-pin-status | grep '"UIM uninitialized"' > /dev/null; do
