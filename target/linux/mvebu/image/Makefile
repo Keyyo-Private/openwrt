@@ -80,6 +80,19 @@ define Build/omnia-medkit-initramfs
 		--file=$@ -C $(dir $(IMAGE_KERNEL))boot/ .
 endef
 
+# Makes an sdcard image with one 256M partition
+# This image is intended to be factory writed by Turris
+define Build/kros-setup-img
+	rm -fR boot.kros
+	mkdir -p $(dir $(IMAGE_KERNEL))boot.kros
+	$(CP) $(DTS_DIR)/$(DEVICE_DTS).dtb $(dir $(IMAGE_KERNEL))boot.kros/kros.dtb
+	$(CP) $(KDIR)/zImage-initramfs $(dir $(IMAGE_KERNEL))boot.kros/kros.img
+	dd if=/dev/zero of=$(dir $(IMAGE_KERNEL))kros.bootimg bs=256M count=1
+	mkfs.btrfs -f -L "KROS_SETUP" -b 268435456 -r $(dir $(IMAGE_KERNEL))boot.kros/ $(dir $(IMAGE_KERNEL))kros.bootimg
+	./gen_mvebu_sdcard_img.sh $@ \
+                83 524288 $(dir $(IMAGE_KERNEL))kros.bootimg
+endef
+
 define Device/Default
   PROFILES := Default
   DEVICE_DTS := $(1)
