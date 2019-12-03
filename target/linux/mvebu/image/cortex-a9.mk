@@ -163,9 +163,11 @@ define Device/turris-omnia
   DEVICE_PACKAGES :=  \
     mkf2fs e2fsprogs kmod-fs-vfat kmod-nls-cp437 kmod-nls-iso8859-1 \
     wpad-mini kmod-ath9k kmod-ath10k ath10k-firmware-qca988x
-  IMAGES := $$(IMAGE_PREFIX)-sysupgrade.img.gz omnia-medkit-$$(IMAGE_PREFIX)-initramfs.tar.gz
+  IMAGES := $$(IMAGE_PREFIX)-sysupgrade.img.gz omnia-medkit-$$(IMAGE_PREFIX)-initramfs.tar.gz \
+    setupimage-$$(IMAGE_PREFIX).img.gz
   IMAGE/$$(IMAGE_PREFIX)-sysupgrade.img.gz := boot-img | sdcard-img | gzip | append-metadata
   IMAGE/omnia-medkit-$$(IMAGE_PREFIX)-initramfs.tar.gz := omnia-medkit-initramfs | gzip
+  IMAGE/setupimage-$$(IMAGE_PREFIX).img.gz := setup-img | gzip
   IMAGE_NAME = $$(2)
   DEVICE_DTS := armada-385-turris-omnia
 endef

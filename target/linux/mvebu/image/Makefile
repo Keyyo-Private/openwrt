@@ -81,16 +81,15 @@ define Build/omnia-medkit-initramfs
 endef
 
 # Makes an sdcard image with one 256M partition
-# This image is intended to be factory writed by Turris
-define Build/kros-setup-img
-	rm -fR boot.kros
-	mkdir -p $(dir $(IMAGE_KERNEL))boot.kros
-	$(CP) $(DTS_DIR)/$(DEVICE_DTS).dtb $(dir $(IMAGE_KERNEL))boot.kros/kros.dtb
-	$(CP) $(KDIR)/zImage-initramfs $(dir $(IMAGE_KERNEL))boot.kros/kros.img
-	dd if=/dev/zero of=$(dir $(IMAGE_KERNEL))kros.bootimg bs=256M count=1
-	mkfs.btrfs -f -L "KROS_SETUP" -b 268435456 -r $(dir $(IMAGE_KERNEL))boot.kros/ $(dir $(IMAGE_KERNEL))kros.bootimg
+define Build/setup-img
+	rm -fR boot.setup
+	mkdir -p $(dir $(IMAGE_KERNEL))boot.setup
+	$(CP) $(DTS_DIR)/$(DEVICE_DTS).dtb $(dir $(IMAGE_KERNEL))boot.setup/kros.dtb
+	$(CP) $(KDIR)/zImage-initramfs $(dir $(IMAGE_KERNEL))boot.setup/kros.img
+	dd if=/dev/zero of=$(dir $(IMAGE_KERNEL))setup.bootimg bs=256M count=1
+	mkfs.btrfs -f -L "KROS_SETUP" -b 268435456 -r $(dir $(IMAGE_KERNEL))boot.setup/ $(dir $(IMAGE_KERNEL))setup.bootimg
 	./gen_mvebu_sdcard_img.sh $@ \
-                83 524288 $(dir $(IMAGE_KERNEL))kros.bootimg
+                83 524288 $(dir $(IMAGE_KERNEL))setup.bootimg
 endef
 
 define Device/Default
